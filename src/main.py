@@ -60,11 +60,11 @@ def extract_last_column(tsv_path: Path, encoding: str) -> list[str]:
     return extracted_values
 
 
-def write_output(values: list[str], output_dir: Path) -> None:
-    """Write each extracted value to a separate numbered text file."""
+def write_output(values: list[str], stem: str, output_dir: Path) -> None:
+    """Write each extracted value to a separate markdown file."""
     output_dir.mkdir(parents=True, exist_ok=True)
     for idx, value in enumerate(values, start=1):
-        output_path = output_dir / f"{idx:03d}.txt"
+        output_path = output_dir / f"{stem}_{idx}.md"
         with open(output_path, 'w', encoding='utf-8') as f:
             f.write(value)
 
@@ -77,7 +77,7 @@ def process_file(tsv_path: Path, output_dir: Path) -> bool:
         encoding = detect_encoding(tsv_path)
         extracted_values = extract_last_column(tsv_path, encoding)
         file_output_dir = output_dir / filename
-        write_output(extracted_values, file_output_dir)
+        write_output(extracted_values, filename, file_output_dir)
         logger.success(f"✓ Extracted {len(extracted_values)} files in {filename}/ ({len(extracted_values)} rows)")
         return True
     except Exception as e:
