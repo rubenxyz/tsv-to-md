@@ -76,9 +76,8 @@ def process_file(tsv_path: Path, output_dir: Path) -> bool:
         logger.info(f"Processing: {tsv_path.name}")
         encoding = detect_encoding(tsv_path)
         extracted_values = extract_last_column(tsv_path, encoding)
-        file_output_dir = output_dir / filename
-        write_output(extracted_values, filename, file_output_dir)
-        logger.success(f"✓ Extracted {len(extracted_values)} files in {filename}/ ({len(extracted_values)} rows)")
+        write_output(extracted_values, filename, output_dir)
+        logger.success(f"✓ Extracted {len(extracted_values)} files ({len(extracted_values)} rows)")
         return True
     except Exception as e:
         logger.error(f"✗ Failed {tsv_path.name}: {e}")
